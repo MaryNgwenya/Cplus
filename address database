@@ -1,0 +1,173 @@
+ //Mary Ngwenya
+//CIS170C
+//Specification: Append and display records in a address database 
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include <string>
+using namespace std;    //prototypes
+void menu(void);
+void writeData(void);
+void readData(void);
+string * split(string, char);
+
+const string FileName = "TestAddress.txt";
+const char delimiter = ',';
+
+int main () 
+{
+	cout << "Welcome to the Records Bank" << endl;
+        menu();
+		system("pause");
+        return 0;
+} //end main
+
+void menu(void) 
+{
+	char choice;  //declare a character variable to input user choice
+	do{           //start loop (do/while or while)
+				
+	cout << "Choose 'A' for Append Records, 'D' for display records, or 'E' to exit the program." << endl;   //output list of menu choices
+	cout << "Enter choice now:";               //allow user to choose to append records, display records or exit the program 
+	cin >> choice;								//accept input for user’s choice
+	cin.ignore();
+	cout << endl;
+	switch(toupper(choice))					//use a switch statement based on user’s choice to call functions or exit
+	{
+	case 'A' :	writeData(); break;							//if choice is append records call writeData
+	case 'D' :  readData(); break;						    //if choice is display records call readData
+	case 'E' :  cout << "Good-Bye" << endl; break;     	    //if choice is exit indicate the program is ending
+	default: cout << "Invalid entry" << endl; break;	    //otherwise tell user the output is not a menu choice
+	}													    //end switch
+	cout << endl;
+       //End loop
+	  }while(choice != 'e' && choice != 'E');				//loop as long as the user does not choose exit          
+ //End menu function
+}//end menu
+
+void writeData(void)
+{
+//Write the Address Info to a file
+	ofstream outMyStream(FileName, ios::app);//open the text file to append
+	//test if the file is open
+	//if open
+	//Start
+	// test if open
+	if(outMyStream.is_open())  //instantiate the output file stream to append
+	{
+		// declare variables
+		string personsName = "", personsStreet = "", personsCity = "", personsState = "", personsZip = ""; //declare variables of type string for name,street, city, state, zip
+		char again = 'y';  //declare char variable for loop control
+		do					//start do while loop
+		{
+			//user input information
+			cout << "Enter Name: " << endl;		//Allow user to enter name
+			getline(cin, personsName);			//store name (using getline method)
+			cout << "Enter Street: " << endl;	//Allow user to enter address
+			getline(cin, personsStreet);		//store address (using getline method)
+			cout << "Enter City: " << endl;		//Allow user to enter city
+			getline(cin, personsCity);			//store city (using getline method)
+			cout << "Enter State: " << endl;	//Allow user to enter state
+			getline(cin, personsState);			//store state (using getline method)
+			cout << "Enter Zip: " << endl;		//Allow user to enter zipcode (use a string)
+			getline(cin, personsZip);			//store zip (using getline method)
+			//write file
+			outMyStream <<  personsName << delimiter << endl; //write name, street, city, etc. (state, zip) to the file
+			outMyStream << personsStreet << delimiter << endl;	//separate each with a delimiter and end with endl
+			outMyStream << personsCity << delimiter << endl;
+			outMyStream << personsState << delimiter << endl;
+			outMyStream << personsZip << delimiter << endl;
+			outMyStream << endl;
+
+			cout << "Enter another item? (Y?N) ";  //ask if user wants to enter another record
+			cin >> again;							//accept user input
+			cin.ignore();						 //call cin.ignore
+			cout << endl;
+
+		}										//end loop
+		while (again == 'y' || again == 'Y');
+		outMyStream.close();					//close the file
+	}else										//otherwise (if file not open)
+cout << "File not opened" << endl;				//output error message
+}												//End WriteData function
+//end write data
+
+void readData(void)
+{
+	//read data from a file
+//use the split function to break a
+//deliminated line of text into fields
+	//start
+	ifstream inMyStream(FileName, ios::in);//test if open
+
+//instantiate the input file stream object
+if(inMyStream.is_open())//if open
+	{
+		string recBreaks = "";
+		recBreaks.assign(20, '-');
+		int itemCount = 1;							//initialize to 1//declare variable of type int to keep track of the number of records
+		cout << " Show Records " << endl;      
+		string buffer;								//declare variable of type string to read input
+													//read in the first record – prime the loop
+		getline(inMyStream, buffer, '\n');			//use getline with the filestream object instead of cin
+		while(!inMyStream.eof())					//loop while not the end of the file
+		{
+			string *theFields = split(buffer, delimiter);	//call the split function as indicated in the comment of split
+															//output divider line
+			cout << recBreaks << endl;						//output each field (as if it were and array element)
+			
+			cout << "Record #: " << itemCount << endl;		 //read the next line from the file
+			cout << "Name:     " << theFields[0] << endl;
+			cout << "Street:     " << theFields[1] << endl;
+			cout << "City:     " << theFields[2] << endl;
+			cout << "State:     " << theFields[3] << endl;
+			cout << "Zip Code:     " << theFields[4] << endl;
+			itemCount++;									//increment record count
+			getline (inMyStream, buffer, '\n');
+		}//end while loop
+		cout << recBreaks << endl;							//output divider line
+		inMyStream.close();									//close the file
+    }//end if
+	else //otherwise (if not open)
+	cout << "Error: could not open file" << endl;			//output error message
+
+}//end read data
+
+string * split(string theLine, char theDeliminator){
+        //Break theline into fields and save the fields to an array.
+        //Each field will occupy one element in a character array.
+        //theLine is a string with fields separated with theDeliminator character.
+        //Assumes the last field in the string is terminated with a newline.
+        //Useage: string *theFields = split(lineBuffer, ',');
+
+        //determine how many splits there will be so we can size our array
+        int splitCount = 0;
+		 for(int i = 0; i < (int)theLine.size(); i++)
+		{
+ 
+               if (theLine[i] == theDeliminator)
+                         splitCount++;
+        }
+        splitCount++; //add one more to the count because there is not an ending comma 
+        //create an array to hold the fields
+        string* theFieldArray;
+        theFieldArray = new string[splitCount];
+        //split the string into seperate fields
+        string theField = "";
+        int commaCount = 0;
+
+        for(int i = 0; i < (int)theLine.size(); i++){ //read each character and look for the deliminator
+               if (theLine[i] != theDeliminator) {
+                       theField += theLine[i]; //build the field
+               }
+              else { //the deliminator was hit so save to the field to the array
+                       theFieldArray[commaCount] = theField; //save the field to the array
+                       theField = "";
+                       commaCount++;
+              }
+        }
+        theFieldArray[commaCount] = theField; //the last field is not marked with a comma...
+
+        return theFieldArray;
+} //end split
+
