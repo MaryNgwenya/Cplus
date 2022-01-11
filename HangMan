@@ -1,0 +1,127 @@
+//
+//    CIS115 - Week 7 - Course Project Solution
+//    
+//    Revised:  10/13/2014
+//    Hybrid:  DeVry and my own solution
+//
+//    NOTES:
+//    1. The game stops when the user guesses the entire word
+//    2. All searches use for loops with char [] arrays.
+//    3. The user is allowed MAX_GUESSES letter guesses
+//
+//
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+
+namespace Week7_CP
+{
+    class Program
+    {
+        static void Main(string[] args)                  // begin main program
+        {
+            const int MAX_GUESSES = 10;                 // maximum number of guesses
+            const string strWord = "happy";             // secret word
+
+
+            // Initialize the scret word the user will be guessing (last name of the student or whatever)
+            // The secret word could be also be initialized manually:
+            //
+            //    char[] word = { 'h', 'a', 'p', 'p', 'y' };   // hard code
+            //    int wordLength = 5;                          // hard code
+            //
+
+            char[] word = strWord.ToCharArray();      // automatically build char word[] array - uses convenient .NET function
+            int wordLength = word.Length;             // number of letters in the seret word - uses convenient .NET function
+
+
+            char[] guessed = new char[MAX_GUESSES];   // collects correctly guessed letters
+
+            char letter;                              // accepts one guess from user
+            char letterOut;                           // used for writing the seret word status
+            const char hiddenLetter = '*';            // symbol used for an unguessed letter
+
+            int score = 0;                            // number of incorrect guesses
+            int count = 0;                            // number of correct guesses
+
+            bool goodGuess;                           // tracks if the current guess is correct
+            bool solved;                              // tracks if the secret word is solved
+
+            //Display welcome message to the user 
+            Console.WriteLine("Welcome to the hangman game!\n\n");
+
+
+            // BEGIN MASTER LOOP - ONE CYCLE FOR EACH LETTER GUESSED BY THE USER - THERE ARE TWO MAJOR PARTS PER CYCLE:
+            //     PART ONE - DISPLAY THE HIDDEN WORD
+            //     PART TWO - GET NEXT GUESS FROM USER
+
+
+
+            for (int iguess = 0; iguess < MAX_GUESSES; iguess++)       // MASTER LOOP:  PART ONE - DISPLAY THE HIDDEN WORD
+            {
+
+                Console.Write("   ");                   // First, display the current state of the word with guesses made so far
+                solved = true;                          // solved unless any hiddenLetter is required
+                for (int j = 0; j < wordLength; j++)    // Loop for every letter in the secret word
+                {
+
+                    letterOut = hiddenLetter;           // Default is that the letter has not been guessed
+                    for (int m = 0; m < count; m++)     // Inner Loop - for every correctly guessed letter stored in guessed[] array
+                    {
+                        if (word[j] == guessed[m]) letterOut = guessed[m];   // found a match for letter word[j]
+                    }
+                    Console.Write(letterOut);           // write either the letter or the unguessed letter symbol
+                    if (letterOut == hiddenLetter) solved = false;   // not solved:  a hiddenLetter has been output
+                }                                       // END - Loop for every letter in the secret word
+
+                if (solved) Console.Write("   SOLVED!");   // All letters in the word were solved!
+                Console.WriteLine();                       // Finish the line displaying the secret word
+                if (solved) iguess = MAX_GUESSES;          // No additional guesses - MASTER LOOP WILL END
+
+
+                // MASTER LOOP:  PART TWO - GET NEXT GUESS FROM USER
+
+                if (!solved)                                // if solved, suppress output and next guess input
+                {
+                    Console.WriteLine("\n\nGuess # " + (iguess + 1) + ":  Enter a letter please: ");
+                    letter = char.Parse(Console.ReadLine());
+                    //              guessed[index] = letter;  ???  DeVry
+                    //              index++;                  ???  DeVry
+
+                    goodGuess = false;                       // Default is that the letter guessed was wrong
+                    for (int j = 0; j < wordLength; j++)     // Loop for every letter in the secret word
+                    {
+                        if (word[j] == letter) goodGuess = true;
+                    }
+
+                    if (goodGuess)
+                    {
+                        Console.WriteLine("You guessed correctly!\n");
+                        guessed[count] = letter;                       // save correctly guessed letter
+                        count++;
+                    }
+                    else
+                    {
+                        Console.WriteLine("You guessed incorrectly!\n");
+                        score++;                                        // count incorrect gueses
+                    }
+
+                }                        // END - if (!solved) structure for MASTER LOOP:  PART TWO
+
+            }                            // END - MASTER LOOP:  one cycle for each guess
+
+
+            Console.WriteLine("\nGame Over!  Your score (incorrect guesses) is " + score);
+
+            //Keep console window open
+            Console.WriteLine("\n\nPress Enter to close this Window:");
+            Console.ReadLine();
+
+        }   // end main program
+
+    }
+}
+
