@@ -1,0 +1,96 @@
+//Mary Ngwenya
+// CIS170C
+//18May2016
+//iLab week 3
+
+
+#include <iostream>
+#include <cstdint>
+#include <cstdbool>
+#include <iomanip>
+#include <cstring>
+
+int main()
+{
+    string diversName, diversCity;
+    double judgeOne, judgeTwo, judgeThree, judgeFour, judgeFive, degreeDifficultly, allDiverAverage;
+    int  count = 0, continueLoop = Y;
+
+    cout << "Report to the media." << endl;                      //Welcome message
+    cout << "Event: Diving competition" << endl;  
+
+do
+{
+count++;   
+cout << "Enter the diver's name:" << endl;                   //Prompt user for input
+    cin >> diversName;                                           // Process user input
+    cout << "Enter the score given by judge #1:" << endl;        //prompt user for judeg one input
+            if (cin.fail())
+            { cout << "Invalid score - Please reenter (Valid Range: 0-10)" << endl;
+            error = 1; cin.clear();
+            }
+            else
+            {
+            cin >> judgeOne;                                             // process judge one score
+            }
+    cout << "Enter the score given by judge #2:" << endl;
+if (cin.fail())
+{ cout << "Invalid score - Please reenter (Valid Range: 0-10)" << endl;
+error = 1; cin.clear();
+}
+else
+{
+cin >> judgeTwo;
+}
+    cout << "Enter the score given by judge #3:" << endl;
+if (cin.fail())
+{ cout << "Invalid score - Please reenter (Valid Range: 0-10)" << endl;
+error = 1; cin.clear();
+}
+else
+{
+cin >> judgeThree;
+}
+    cout << "Enter the score given by judge #4:" << endl;
+if (cin.fail())
+{ cout << "Invalid score - Please reenter (Valid Range: 0-10)" << endl;
+error = 1; cin.clear();
+}
+else
+{
+cin >> judgeFour;
+}
+    cout << "Enter the score given by judge #5:" << endl;
+if (cin.fail())
+{ cout << "Invalid score - Please reenter (Valid Range: 0-10)" << endl;
+error = 1; cin.clear();
+}
+else
+{
+cin >> judgeFive;
+}
+    cout << "What was the degree of difficulty?" << endl;
+if (cin.fail())
+{ cout << "Invalid score - Please reenter (Valid Range: 0-10)" << endl;
+error = 1; cin.clear();
+}
+else
+{
+cin >> degreeDifficultly;
+}
+    cout << "Diver: " << diversName << ", City: " << diversCity << endl;
+       count++;
+    count++;
+}      while ( continueLoop == Y) && || (continueLoop == y);
+    {
+     cout << "Do you want to process another diver (Y/N)?" << endl;
+     cin >> continueLoop;
+     else
+         {
+allDiverAverage =  (judgeOne +  judgeTwo + judgeThree + judgeFour + judgeFive)/5
+        cout << "Event summary" << endl;
+        cout << "Number of divers participating: " << count << endl;
+        count << "Average score of all divers: " <<  allDiverAverage << endl;
+        }
+system("pause");
+      }
