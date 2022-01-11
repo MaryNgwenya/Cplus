@@ -1,0 +1,106 @@
+//Mary Ngwenya
+//26May2016
+//CIS170C
+//Week 5 LAB
+
+
+#include <iostream>
+#include <iomanip>
+#include <string>
+
+using namespace std;
+//prototypes
+const int ARRAY_SIZE = 100;  //all arrays in this iLab are the same size
+	
+void InputData(string playerName[], int playerScore[], int numberOfPlayers[], int &numItems);
+
+void DisplayPlayerData(string playerName[], int playerScore[], int numberOfPlayers[], int &numItems);
+
+double CalculateAverageScore(int playerScore[], int numberOfPlayers[], int &numItems);
+
+void DisplayBelowAverage(string playerName[], int playerScore[],  int numberOfPlayers[], double averageScore[], int &numItems, double &overallAveScore);
+
+int main()
+{
+string playerName[ARRAY_SIZE];
+double averageScore[ARRAY_SIZE], overallAveScore = 0;
+int playerScore[ARRAY_SIZE];
+int numberOfPlayers[ARRAY_SIZE];
+int numItems = 0;
+
+cout << " ==========================================" << endl ;
+cout << " Welcome Video Game Player Program" << endl;
+cout << " ==========================================" << endl << endl;
+// set monetary values to two places after the decimal point
+cout << fixed << setprecision(2);
+
+InputData(playerName, playerScore, numberOfPlayers, numItems);
+DisplayPlayerData(playerName, playerScore, numberOfPlayers, numItems);
+overallAveScore = CalculateAverageScore(playerScore, numberOfPlayers, numItems);
+DisplayBelowAverage(playerName, playerScore, numberOfPlayers, averageScore, numItems, overallAveScore);
+return 0;
+}
+// input player data
+void InputData(string playerName[], int playerScore[], int numberOfPlayers[], int &numItems)
+{
+// input playerName up to the number of the array size
+while(numItems < ARRAY_SIZE)
+{
+cout << "Enter player name to begin (Q to quit): ";
+getline(cin, playerName[numItems]);
+if((playerName[numItems] == "Q") || (playerName[numItems] == "q"))
+{
+cout << endl;
+break;
+}
+else
+{
+cout << "Enter the player's score." << playerScore[numItems] << endl;
+cin >> playerScore[numItems];
+cin.ignore();
+numItems++;
+}
+}
+}
+// display player data
+void DisplayPlayerData(string playerName[], int playerScore[], int numberOfPlayers[], int &numItems)
+{
+cout << "Display of player data." << endl;
+cout << "===========================" << endl;
+cout << setw(10) << left << "\n Player Name"
+<< setw(5) << right << "Player Score:" << endl;
+for(int i = 0; i < numItems; i++)
+cout << setw(10) << left << playerName[i]
+<< setw(5) << right << playerScore[i] << endl;
+}
+// calculate and output the total
+// calculate and return the tax
+double CalculateAverageScore(int playerScore[], int numberOfPlayers[], int &numItems)
+{
+double overallAveScore, total;
+int i;
+
+// loop to add total of all players and total average score
+for(i = 0, total = 0; i < numItems; i++)
+{
+//add all scores
+total += playerScore[i];
+}
+// calculate average score
+overallAveScore = total / numItems;
+
+cout << "\n Average Score is:" << overallAveScore << endl << endl;
+return overallAveScore;
+}
+void DisplayBelowAverage(string playerName[], int playerScore[],  int numberOfPlayers[], double averageScore[], int &numItems, double &overallAveScore)
+{
+cout << "\n\n Players (and their scores) that scored below average.\n";
+cout << setw(10) << left << " Player"
+<< setw(5) << right << "Score" << endl;
+for(int i = 0; i < numItems; i++)
+if(playerScore[i] < overallAveScore )
+cout << setw(10) << left <<
+playerName[i] << setw(5) << right << playerScore[i] << endl;
+cout << "\nPlayer's score:" << playerScore << endl << endl << endl ;
+}
+
